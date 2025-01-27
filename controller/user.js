@@ -42,7 +42,7 @@ export const register = (req , res) => {
     if(role === 'driver'){
         db.query(driverExist,[req.body.empid],(err , data) => {
             if(err){
-                res.status(500).json("register error: "+ err);
+                res.status(500).json("register failed: "+ err);
                 return;
             }
             if(data.length){
@@ -69,4 +69,59 @@ export const register = (req , res) => {
     }
 }
 
-export const login = ( req , res) => {}
+export const login = ( req , res) => {
+    const studentLogin = `SELECT * FROM students WHERE regno = ? `;
+    const driverLogin = `SELECT * FROM drivers WHERE empid = ? `;
+    const adminLogin = `SELECT * FROM admins WHERE email = ? `;
+
+    const role = req.body.role;
+
+    if(role === 'student'){
+        db.query(studentLogin , [req.body.regno] ,(err, data) => {
+            if(err) return res.status(500).json("Login failed: " + err);
+            if(data.length === 0) return res.status(404).json("User not found");
+            const checkedPassword = bcrypt.compareSync(req.body.password , data[0].password);
+            if(!checkedPassword) return res.status(401).json("Wrong Register number or Password");
+
+            const token = jwt.sign({ id: data[0].id} , process.env.SECRET_KEY);
+            const {password , ...others} = data[0];
+
+            res.cookie("bus_tracking_key" , token ,{
+                httpOnly: true,
+                secure: true
+            }).status(200).json(others);
+        })
+    }
+    if(role === 'driver'){
+        db.query(driverLogin , [req.body.empid] ,(err, data) => {
+            if(err) return res.status(500).json("Login failed: " + err);
+            if(data.length === 0) return res.status(404).json("User not found");
+            const checkedPassword = bcrypt.compareSync(req.body.password , data[0].password);
+            if(!checkedPassword) return res.status(401).json("Wrong Employee id or Password");
+
+            const token = jwt.sign({ id: data[0].id} , process.env.SECRET_KEY);
+            const {password , ...others} = data[0];
+
+            res.cookie("bus_tracking_key" , token ,{
+                httpOnly: true,
+                secure: true
+            }).status(200).json(others);
+        })
+    }
+    if(role === 'admin'){
+        db.query(adminLogin , [req.body.email] ,(err, data) => {
+            if(err) return res.status(500).json("Login failed: " + err);
+            if(data.length === 0) return res.status(404).json("User not found");
+            const checkedPassword = bcrypt.compareSync(req.body.password , data[0].password);
+            if(!checkedPassword) return res.status(401).json("Wrong Email or Password");
+
+            const token = jwt.sign({ id: data[0].id} , process.env.SECRET_KEY);
+            const {password , ...others} = data[0];
+
+            res.cookie("bus_tracking_key" , token ,{
+                httpOnly: true,
+                secure: true
+            }).status(200).json(others);
+        })
+    }
+}
