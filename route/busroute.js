@@ -1,8 +1,12 @@
 import express from 'express';
-import { busroutes } from '../controller/busroute.js';
+import { getRoute, getRoutes, postRoute, searchLocation, searchRoute } from '../controller/busroute.js';
 
 const router = express.Router();
 
-router.get('/route',busroutes);
+router.get('/routes',getRoutes);
+router.post('/addroute',postRoute);
+router.get('/route',getRoute);
+router.get('/searchRoute',searchRoute);
+router.get('/searchLocation',searchLocation);
 
 export default router;

@@ -115,7 +115,7 @@ export const login = ( req , res) => {
             const checkedPassword = bcrypt.compareSync(req.body.password , data[0].password);
             if(!checkedPassword) return res.status(401).json("Wrong Email or Password");
 
-            const token = jwt.sign({ id: data[0].id} , process.env.SECRET_KEY);
+            const token = jwt.sign({ id: data[0].id , name: data[0].name , email: data[0].email} , process.env.SECRET_KEY);
             const {password , ...others} = data[0];
 
             res.cookie("bus_tracking_key" , token ,{

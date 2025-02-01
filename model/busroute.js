@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
 const busRouteSchema = mongoose.Schema({
-    commentsID: String,
-    name: String,
-    email: String,
-    movieID: String,
-    text: String,
-    date: Date
+    routeId: Number,
+    routeName: String,
+    driverId: String,
+    stops: [
+        {
+            stopNo: Number,
+            stopName: String,
+            place: String
+        }
+    ]
 })
 
-const busRouteModel = mongoose.model('comments',busRouteSchema);
+const busRouteModel = mongoose.model('busRoutes',busRouteSchema);
 
 export default busRouteModel;
