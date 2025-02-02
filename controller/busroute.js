@@ -95,6 +95,7 @@ export const searchLocation = async (req , res) => {
                 $project: {
                     _id: 0,               // Exclude _id from results
                     routeName: 1,         // Include routeName
+                    routeId: 1,         // Include routeName
                     "stops.stopName": 1,  // Include stopName
                     "stops.place": 1      // Include place
                 }
