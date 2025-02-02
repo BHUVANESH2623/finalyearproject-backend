@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/routes',getRoutes);
 router.post('/addroute',postRoute);
-router.get('/route',getRoute);
+router.get('/:routeName',getRoute);
 router.get('/searchRoute',searchRoute);
 router.get('/searchLocation',searchLocation);
 
