@@ -9,6 +9,7 @@ export const getRoutes = async(req , res) => {
     }
     catch(err){
         console.log(err);
+        return res.status(500).json("getRoute error")
     }
 };
 
@@ -42,8 +43,26 @@ export const postRoute = async (req , res) => {
     })
 };
 
-export const getRoute = async (req , res) => {};
+export const getRoute = async (req , res) => {
+    try {
+        const routeName = req.params.routeName;
+        const result = await busRouteModel.findOne({routeName})
+        return res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json("getRoute error")
+    }
+};
 
-export const searchRoute = async (req , res) => {};
+export const searchRoute = async (req , res) => {
+    try {
+        const routeName = req.body.routeName;
+        const result = await busRouteModel.findOne({routeName})
+        return res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json("getRoute error")
+    }
+};
 
 export const searchLocation = async (req , res) => {};
