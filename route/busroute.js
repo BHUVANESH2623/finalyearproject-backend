@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/routes',getRoutes);
 router.post('/addroute',postRoute);
 router.get('/:routeName',getRoute);
-router.get('/searchRoute',searchRoute);
-router.get('/searchLocation',searchLocation);
+router.post('/searchRoute',searchRoute);
+router.post('/searchLocation',searchLocation);
 
 export default router;
